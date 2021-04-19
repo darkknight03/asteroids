@@ -1,11 +1,13 @@
 #include "../include/Spaceship.h"
+#include "../include/Laser.h"
 
 namespace asteroids {
 
-    Spaceship::Spaceship(const vec2& startLocation, int health, int speed) {
+    Spaceship::Spaceship(const vec2& startLocation, const vec2& speed, int health, int radius) {
         location_ = startLocation;
         health_ = health;
-        speed_ = speed;
+        velocity_ = speed;
+        radius_ = radius;
     }
 
     vec2 Spaceship::GetLocation() const {
@@ -16,19 +18,26 @@ namespace asteroids {
         return health_;
     }
 
-    int Spaceship::GetSpeed() const {
-        return speed_;
+    vec2 Spaceship::GetVelocity() const {
+        return velocity_;
     }
 
-    void Spaceship::MakeMove() {
-
+    void Spaceship::MakeMove(int m) {
+        // move left
+        if (m == 0) {
+            location_.x -= velocity_.x;
+        } else {
+            // move right
+            location_.x += velocity_.x;
+        }
     }
 
     void Spaceship::LoseHealth(int num) {
         health_ -= num;
     }
 
-    void Spaceship::ShootLaser(int power, int speed) {
+    void Spaceship::ShootLaser(int power, vec2& speed) {
+        Laser laser(location_, speed, power, kLaserRadius);
 
     }
 

@@ -2,10 +2,10 @@
 
 namespace asteroids {
 
-    Laser::Laser(const vec2 &startLocation, int power, int speed, int radius) {
+    Laser::Laser(const vec2 &startLocation, const vec2& speed, int power, int radius) {
         location_ = startLocation;
         power_ = power;
-        speed_ = speed;
+        velocity_ = speed;
         radius_ = radius;
     }
 
@@ -17,17 +17,22 @@ namespace asteroids {
         return power_;
     }
 
-    int Laser::GetSpeed() const {
-        return speed_;
+    vec2 Laser::GetVelocity() const {
+        return velocity_;
     }
 
     bool Laser::CollideWithSpaceship(Spaceship &ship) const {
-        vec2 loc = ship.GetLocation();
-
-        return false;
+        float moving_toward = glm::dot((GetVelocity() - ship.GetVelocity()),
+                                       (GetLocation() - ship.GetLocation()));
+        return (glm::distance(GetLocation(), ship.GetLocation()) <=
+                GetRadius() + ship.GetRadius() && moving_toward < 0);
     }
 
     int Laser::GetRadius() const {
         return radius_;
+    }
+
+    void Laser::MakeMove() {
+        location_ += velocity_;
     }
 }
