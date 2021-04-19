@@ -1,7 +1,3 @@
-//
-// Created by Nathan on 4/18/2021.
-//
-
 #ifndef FINAL_PROJECT_SPACESHIP_H
 #define FINAL_PROJECT_SPACESHIP_H
 
@@ -9,42 +5,45 @@
 
 using glm::vec2;
 
-class Spaceship {
-public:
-    Spaceship(vec2 startLocation, int health, int speed);
+namespace asteroids {
 
-    vec2 GetLocation() const;
+    class Spaceship {
+    public:
+        Spaceship(const vec2& startLocation, int health, int speed);
 
-    int GetHealth() const;
+        vec2 GetLocation() const;
 
-    int GetSpeed() const;
+        int GetHealth() const;
 
-    int GetScore() const;
+        int GetSpeed() const;
 
-    void ChangeScore(int score);
+        int GetScore() const;
 
-    void MakeMove();
+        void ChangeScore(int score);
 
-    void LoseHealth(int num);
+        void MakeMove();
 
-    void ShootLaser(int power, int speed);
+        void LoseHealth(int num);
 
-    void SetDamage(int power);
+        void ShootLaser(int power, int speed);
 
-    int GetDamage() const;
+        void SetDamage(int power);
 
-private:
-    vec2 location_;
+        int GetDamage() const;
 
-    int health_;
+    private:
+        vec2 location_;
 
-    int speed_;
+        int health_;
 
-    int score_;
+        int speed_;
 
-    int damage_;
+        int score_;
 
-};
+        int damage_;
+
+    };
 
 
 #endif //FINAL_PROJECT_SPACESHIP_H
+} //namespace asteroids

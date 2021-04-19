@@ -1,49 +1,51 @@
-//
-// Created by Nathan on 4/18/2021.
-//
-
 #include "../include/Spaceship.h"
 
-Spaceship::Spaceship(vec2 startLocation, int health, int speed) {
+namespace asteroids {
 
-}
+    Spaceship::Spaceship(const vec2& startLocation, int health, int speed) {
+        location_ = startLocation;
+        health_ = health;
+        speed_ = speed;
+    }
 
-vec2 Spaceship::GetLocation() const {
-    return glm::vec2();
-}
+    vec2 Spaceship::GetLocation() const {
+        return location_;
+    }
 
-int Spaceship::GetHealth() const {
-    return 0;
-}
+    int Spaceship::GetHealth() const {
+        return health_;
+    }
 
-int Spaceship::GetSpeed() const {
-    return 0;
-}
+    int Spaceship::GetSpeed() const {
+        return speed_;
+    }
 
-void Spaceship::MakeMove() {
+    void Spaceship::MakeMove() {
 
-}
+    }
 
-void Spaceship::LoseHealth(int num) {
+    void Spaceship::LoseHealth(int num) {
+        health_ -= num;
+    }
 
-}
+    void Spaceship::ShootLaser(int power, int speed) {
 
-void Spaceship::ShootLaser(int power, int speed) {
+    }
 
-}
+    int Spaceship::GetScore() const {
+        return score_;
+    }
 
-int Spaceship::GetScore() const {
-    return 0;
-}
+    void Spaceship::ChangeScore(int score) {
+        score_ += score;
+    }
 
-void Spaceship::ChangeScore(int score) {
+    void Spaceship::SetDamage(int power) {
+        damage_ = power;
+    }
 
-}
+    int Spaceship::GetDamage() const {
+        return damage_;
+    }
 
-void Spaceship::SetDamage(int power) {
-
-}
-
-int Spaceship::GetDamage() const {
-    return 0;
 }
