@@ -11,7 +11,15 @@ namespace asteroids {
 
     class Spaceship {
     public:
+        Spaceship();
+
         Spaceship(const vec2& startLocation, const vec2& speed, int health, int radius);
+
+        Spaceship(int health, int radius);
+
+        void SetLocation(vec2& location);
+
+        void SetVelocity(vec2& velocity);
 
         vec2 GetLocation() const;
 

@@ -10,6 +10,11 @@ namespace asteroids {
         radius_ = radius;
     }
 
+    Spaceship::Spaceship(int health, int radius) {
+        health_ = health;
+        radius_ = radius;
+    }
+
     vec2 Spaceship::GetLocation() const {
         return location_;
     }
@@ -37,8 +42,8 @@ namespace asteroids {
     }
 
     void Spaceship::ShootLaser(int power, vec2& speed) {
+        // Not Implemented
         Laser laser(location_, speed, power, kLaserRadius);
-
     }
 
     int Spaceship::GetScore() const {
@@ -56,5 +61,16 @@ namespace asteroids {
     int Spaceship::GetDamage() const {
         return damage_;
     }
+
+    void Spaceship::SetLocation(vec2& location) {
+        location_ = location;
+    }
+
+    void Spaceship::SetVelocity(vec2& velocity) {
+        velocity_ = velocity;
+    }
+
+    Spaceship::Spaceship() { }
+
 
 }
