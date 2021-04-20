@@ -53,7 +53,8 @@ list(APPEND SOURCE_FILES src/GameEngine.cc
                         src/Spaceship.cc
                         src/Enemy.cc
                         src/Laser.cc
-                        src/AsteroidsApp.cc)
+                        src/AsteroidsApp.cc
+                        src/Level.cc)
 
 list(APPEND TEST_FILES)
 
