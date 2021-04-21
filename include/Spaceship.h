@@ -7,19 +7,29 @@ using glm::vec2;
 
 namespace asteroids {
 
-    static const int kLaserRadius = 1;
-
     class Spaceship {
-    public:
-        Spaceship();
+        static const int kLaserRadius = 1;
 
-        Spaceship(const vec2& startLocation, const vec2& speed, int health, int radius);
+    public:
+        Spaceship(const vec2 &startLocation, const vec2 &speed, int health, int radius);
 
         Spaceship(int health, int radius);
 
-        void SetLocation(vec2& location);
+        void SetLocation(vec2 &location);
 
-        void SetVelocity(vec2& velocity);
+        void SetVelocity(vec2 &velocity);
+
+        void SetDamage(int power);
+
+        void ChangeScore(int score);
+
+        void MakeMove(int m);
+
+        void EnemyMove();
+
+        void LoseHealth(int num);
+
+        void ShootLaser(int power, const vec2 &speed);
 
         vec2 GetLocation() const;
 
@@ -28,16 +38,6 @@ namespace asteroids {
         vec2 GetVelocity() const;
 
         int GetScore() const;
-
-        void ChangeScore(int score);
-
-        void MakeMove(int m);
-
-        void LoseHealth(int num);
-
-        void ShootLaser(int power, vec2& speed);
-
-        void SetDamage(int power);
 
         int GetDamage() const;
 
@@ -59,5 +59,5 @@ namespace asteroids {
     };
 
 
-#endif //FINAL_PROJECT_SPACESHIP_H
 } //namespace asteroids
+#endif //FINAL_PROJECT_SPACESHIP_H

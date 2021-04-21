@@ -15,6 +15,11 @@ namespace asteroids {
     const int kEnemyStartingHealth = 25;
     const int kNumberOfEnemyShipsStart = 5;
 
+    const static int kTopLeftX = 50;
+    const static int kTopLeftY = 50;
+    const static int kBottomRightX = 900;
+    const static int kBottomRightY = 850;
+
     class GameEngine {
 
     public:

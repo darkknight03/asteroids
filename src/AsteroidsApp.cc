@@ -6,21 +6,36 @@
 
 namespace asteroids {
 
-    AsteroidsApp::AsteroidsApp() {
+    AsteroidsApp::AsteroidsApp() : ship_(vec2(500, 850), vec2(25, 0), 100, 5), engine_(ship_) {
         ci::app::setWindowSize(kWindowSize, kWindowSize);
+        engine_.InitializeLevels(5);
 
     }
 
     void AsteroidsApp::draw() {
         ci::Color background_color("black");
         ci::gl::clear(background_color);
+        engine_.Display();
     }
 
     void AsteroidsApp::update() {
-        AppBase::update();
+        engine_.AdvanceOneFrame();
     }
 
     void AsteroidsApp::keyDown(ci::app::KeyEvent event) {
-        AppBase::keyDown(event);
+        switch (event.getCode()) {
+            case ci::app::KeyEvent::KEY_LEFT:
+                // move user left
+                ship_.MakeMove(0);
+                break;
+            case ci::app::KeyEvent::KEY_RIGHT:
+                // move user right
+                ship_.MakeMove(1);
+                break;
+            case ci::app::KeyEvent::KEY_SPACE:
+                // shoot laser
+                ship_.MakeMove(9);
+                break;
+        }
     }
 }

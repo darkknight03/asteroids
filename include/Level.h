@@ -4,25 +4,17 @@
 #include "Spaceship.h"
 #include <vector>
 #include <map>
+#include "GameEngine.h"
 
 namespace asteroids {
 
-    const int kNumOfShipsPerRow = 5;
-    const static int kTopLeftX = 50;
-    const static int kTopLeftY = 50;
-    const static int kBottomRightX = 900;
-    const static int kBottomRightY = 900;
 
     class Level {
+        const int kNumOfShipsPerRow = 5;
+        const int kRadius = 25;
+
     public:
         Level(int num_ships, int health);
-
-        /**
-         * Display the enemy ships on the screen
-         */
-        void Display() const;
-
-        void AdvanceOneFrame();
 
         int GetHealth() const;
 
@@ -32,8 +24,19 @@ namespace asteroids {
 
         std::vector<int> GetEnemiesAlive() const;
 
-        static int CalculateShipSpacing(int radius, int window_size);
+        /**
+         * Checks if ship is moving right and cannot move any more right
+         * @return true if on edge
+         */
+        bool IsOnRightEdge(Spaceship &ship);
 
+        /**
+         * Checks if ship is moving left and cannot move any more left
+         * @return true if on edge
+         */
+        bool IsOnLeftEdge(Spaceship &ship);
+
+        int CalculateShipSpacing(int radius, int window_size) const;
 
 
     private:
