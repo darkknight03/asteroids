@@ -100,4 +100,6 @@ namespace asteroids {
     void Spaceship::SetRow(int row) {
         row_ = row;
     }
+
+    Spaceship::Spaceship() = default;
 }

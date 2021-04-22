@@ -15,6 +15,8 @@ namespace asteroids {
 
         Spaceship(const vec2 &startLocation, const vec2 &speed, int health, int radius, int row);
 
+        Spaceship();
+
         void SetLocation(vec2 &location);
 
         void SetVelocity(vec2 &velocity);

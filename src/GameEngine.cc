@@ -15,7 +15,7 @@ namespace asteroids {
             level.InitializeShips(kTopLeftX, kTopLeftY, kBottomRightX, kBottomRightY);
             levels_.push_back(level);
             current_health += kIncreaseHealth;
-            // TODO: check if level if multiple of 5, then increase
+            // TODO: check if level if multiple of 3, then increase
             current_number_ships += 1;
         }
     }

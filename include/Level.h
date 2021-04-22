@@ -33,6 +33,13 @@ namespace asteroids {
          */
         bool IsOnLeftEdge(Spaceship &ship);
 
+        /**
+         * Calculates the spacing in between ships evenly
+         * @param x1 the first coordinate
+         * @param x2 the second coordinate
+         * @param num_ships per row
+         * @return the calculation
+         */
         double CalculateShipSpacing(int x1, int x2, int num_ships) const;
 
         void InitializeShips(int x1, int y1, int x2, int y2);
@@ -41,15 +48,21 @@ namespace asteroids {
     private:
         int num_ships_;
 
+        /**
+         * Number of enemies per row
+         */
         int per_row_;
 
         int health_;
 
+        /**
+         * Map from index to spaceship
+         */
         std::map<int, Spaceship> enemies_;
 
         /**
          * Contains a number mimicking the enemies position in vector
-         * if ship is destroyed, change number to -1
+         * if ship is destroyed, remove index from vector
          * Used for checking if the level is over
          */
         std::vector<int> alive_;

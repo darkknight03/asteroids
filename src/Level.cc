@@ -40,7 +40,7 @@ namespace asteroids {
                 // even row, go right to left
                 for (int col = 0; col < per_row_; col++) {
                     Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(25, 25), health_, kRadius, row);
-                    enemies_.at(ship_index) = enemy;
+                    enemies_[ship_index] = enemy;
                     alive_.push_back(ship_index);
                     ship_index++;
                 }
@@ -48,7 +48,7 @@ namespace asteroids {
                 // odd row, go left to right
                 for (int col = per_row_ - 1; col >= 0; col--) {
                     Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(25, 25), health_, kRadius, row);
-                    enemies_.at(ship_index) = enemy;
+                    enemies_[ship_index] = enemy;
                     alive_.push_back(ship_index);
                     ship_index++;
                 }
@@ -61,15 +61,15 @@ namespace asteroids {
             // go right to left
             for (int col = 0; col < extra; col++) {
                 Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(25, 25), health_, kRadius);
-                enemies_.at(ship_index) = enemy;
+                enemies_[ship_index] = enemy;
                 alive_.push_back(ship_index);
                 ship_index++;
             }
         } else {
             // go left to right
-            for (int col = extra - 1; col >= 0; col++) {
+            for (int col = per_row_ - 1; col >= per_row_ - extra; col--) {
                 Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(25, 25), health_, kRadius);
-                enemies_.at(ship_index) = enemy;
+                enemies_[ship_index] = enemy;
                 alive_.push_back(ship_index);
                 ship_index++;
             }
