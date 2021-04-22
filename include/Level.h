@@ -4,10 +4,8 @@
 #include "Spaceship.h"
 #include <vector>
 #include <map>
-#include "GameEngine.h"
 
 namespace asteroids {
-
 
     class Level {
         const int kRadius = 25;

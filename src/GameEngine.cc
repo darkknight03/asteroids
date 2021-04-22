@@ -18,7 +18,6 @@ namespace asteroids {
             // TODO: check if level if multiple of 5, then increase
             current_number_ships += 1;
         }
-
     }
 
     void GameEngine::Display() const {
@@ -92,9 +91,6 @@ namespace asteroids {
         // reduce health by amount of enemy health remaining
     }
 
-    std::vector<Level> GameEngine::GetLevels() const {
-        return levels_;
-    }
 
     bool GameEngine::LevelOver() {
         std::vector<int> alive = levels_.at(current_level_).GetEnemiesAlive();

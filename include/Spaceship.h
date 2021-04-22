@@ -19,6 +19,8 @@ namespace asteroids {
 
         void SetVelocity(vec2 &velocity);
 
+        void SetRow(int row);
+
         void SetDamage(int power);
 
         void ChangeScore(int score);

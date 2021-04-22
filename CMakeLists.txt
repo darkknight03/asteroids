@@ -56,7 +56,9 @@ list(APPEND SOURCE_FILES src/GameEngine.cc
                         src/AsteroidsApp.cc
                         src/Level.cc)
 
-list(APPEND TEST_FILES)
+list(APPEND TEST_FILES  tests/spaceship_test.cc
+                        tests/level_test.cc
+                        tests/game_engine_test.cc)
 
 add_executable(main apps/main.cc ${CORE_SOURCE_FILES} )
 target_include_directories(main PRIVATE include)

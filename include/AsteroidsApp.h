@@ -10,6 +10,8 @@
 #include "cinder/gl/gl.h"
 #include "GameEngine.h"
 #include "Spaceship.h"
+#include "Level.h"
+#include "Laser.h"
 
 namespace asteroids {
 
@@ -19,7 +21,6 @@ namespace asteroids {
 
         void draw() override;
         void update() override;
-
         void keyDown(ci::app::KeyEvent event) override;
 
         const int kWindowSize = 1100;

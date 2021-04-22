@@ -35,6 +35,5 @@ namespace asteroids {
 
     };
 
-
-#endif //FINAL_PROJECT_LASER_H
 } //namespace asteroids
+#endif //FINAL_PROJECT_LASER_H

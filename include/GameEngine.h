@@ -1,7 +1,6 @@
 #ifndef FINAL_PROJECT_GAMEENGINE_H
 #define FINAL_PROJECT_GAMEENGINE_H
 
-#include <Spaceship.h>
 #include <Level.h>
 #include <Laser.h>
 #include "cinder/ImageIo.h"
@@ -18,7 +17,7 @@ namespace asteroids {
     const static int kTopLeftX = 50;
     const static int kTopLeftY = 50;
     const static int kBottomRightX = 1000;
-    const static int kBottomRightY = 950;
+    const static int kBottomRightY = 900;
 
     class GameEngine {
 
@@ -41,8 +40,6 @@ namespace asteroids {
         bool LevelOver();
 
         void SwitchLevel();
-
-        std::vector<Level> GetLevels() const;
 
         /**
          * Display the current level with the ships on the screen
@@ -84,5 +81,5 @@ namespace asteroids {
     };
 
 
-#endif //FINAL_PROJECT_GAMEENGINE_H
 } //namespace asteroids
+#endif //FINAL_PROJECT_GAMEENGINE_H

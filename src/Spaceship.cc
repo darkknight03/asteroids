@@ -96,4 +96,8 @@ namespace asteroids {
     int Spaceship::GetRow() const {
         return row_;
     }
+
+    void Spaceship::SetRow(int row) {
+        row_ = row;
+    }
 }
