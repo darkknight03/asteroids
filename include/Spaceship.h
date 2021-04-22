@@ -13,7 +13,7 @@ namespace asteroids {
     public:
         Spaceship(const vec2 &startLocation, const vec2 &speed, int health, int radius);
 
-        Spaceship(int health, int radius);
+        Spaceship(const vec2 &startLocation, const vec2 &speed, int health, int radius, int row);
 
         void SetLocation(vec2 &location);
 
@@ -43,6 +43,8 @@ namespace asteroids {
 
         int GetRadius() const;
 
+        int GetRow() const;
+
     private:
         vec2 location_;
 
@@ -55,6 +57,8 @@ namespace asteroids {
         int damage_;
 
         int radius_;
+
+        int row_;
 
     };
 

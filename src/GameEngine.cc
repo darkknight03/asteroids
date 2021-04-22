@@ -11,26 +11,14 @@ namespace asteroids {
         int current_health = kEnemyStartingHealth;
         int current_number_ships = kNumberOfEnemyShipsStart;
         for (int l = 0; l < number_of_levels; l++) {
-            Level level(current_number_ships, current_health);
+            Level level(current_number_ships, 5, current_health);
+            level.InitializeShips(kTopLeftX, kTopLeftY, kBottomRightX, kBottomRightY);
             levels_.push_back(level);
             current_health += kIncreaseHealth;
+            // TODO: check if level if multiple of 5, then increase
             current_number_ships += 1;
         }
 
-    }
-
-    bool GameEngine::LevelOver() {
-        std::vector<int> alive = levels_.at(current_level_).GetEnemiesAlive();
-        return alive.empty();
-
-    }
-
-    void GameEngine::SwitchLevel() {
-        current_level_++;
-    }
-
-    std::vector<Level> GameEngine::GetLevels() const {
-        return levels_;
     }
 
     void GameEngine::Display() const {
@@ -84,9 +72,12 @@ namespace asteroids {
                 enemy.MakeMove(2);
             }
             // if enemy on even row, move right
-            enemy.MakeMove(1);
             // if enemy on odd row, move left
-            enemy.MakeMove(0);
+            if (enemy.GetRow() % 2 == 0) {
+                enemy.MakeMove(1);
+            } else {
+                enemy.MakeMove(0);
+            }
         }
 
     }
@@ -94,12 +85,24 @@ namespace asteroids {
     void GameEngine::UpdateScore() {
         // check if enemy was destroyed
         // increase score by health of enemy times 10
-
     }
 
     void GameEngine::UpdateHealth() {
         // check if enemy reaches bottom of screen
         // reduce health by amount of enemy health remaining
-
     }
+
+    std::vector<Level> GameEngine::GetLevels() const {
+        return levels_;
+    }
+
+    bool GameEngine::LevelOver() {
+        std::vector<int> alive = levels_.at(current_level_).GetEnemiesAlive();
+        return alive.empty();
+    }
+
+    void GameEngine::SwitchLevel() {
+        current_level_++;
+    }
+
 }

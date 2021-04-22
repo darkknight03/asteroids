@@ -10,9 +10,12 @@ namespace asteroids {
         radius_ = radius;
     }
 
-    Spaceship::Spaceship(int health, int radius) {
+    Spaceship::Spaceship(const vec2 &startLocation, const vec2 &speed, int health, int radius, int row) {
+        location_ = startLocation;
+        velocity_ = speed;
         health_ = health;
         radius_ = radius;
+        row_ = row;
     }
 
 
@@ -88,5 +91,9 @@ namespace asteroids {
 
     int Spaceship::GetRadius() const {
         return radius_;
+    }
+
+    int Spaceship::GetRow() const {
+        return row_;
     }
 }

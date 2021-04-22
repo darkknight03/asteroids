@@ -10,11 +10,10 @@ namespace asteroids {
 
 
     class Level {
-        const int kNumOfShipsPerRow = 5;
         const int kRadius = 25;
 
     public:
-        Level(int num_ships, int health);
+        Level(int num_ships, int per_row, int health);
 
         int GetHealth() const;
 
@@ -36,11 +35,15 @@ namespace asteroids {
          */
         bool IsOnLeftEdge(Spaceship &ship);
 
-        int CalculateShipSpacing(int radius, int window_size) const;
+        double CalculateShipSpacing(int x1, int x2, int num_ships) const;
+
+        void InitializeShips(int x1, int y1, int x2, int y2);
 
 
     private:
         int num_ships_;
+
+        int per_row_;
 
         int health_;
 

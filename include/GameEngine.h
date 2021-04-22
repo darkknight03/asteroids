@@ -17,8 +17,8 @@ namespace asteroids {
 
     const static int kTopLeftX = 50;
     const static int kTopLeftY = 50;
-    const static int kBottomRightX = 900;
-    const static int kBottomRightY = 850;
+    const static int kBottomRightX = 1000;
+    const static int kBottomRightY = 950;
 
     class GameEngine {
 
