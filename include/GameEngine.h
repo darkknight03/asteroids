@@ -10,7 +10,7 @@
 namespace asteroids {
 
     const int kIncreaseHealth = 5;
-    const int kIncreaseVelocity = 5;
+    const int kIncreaseVelocity = 1;
     const int kEnemyStartingHealth = 25;
     const int kNumberOfEnemyShipsStart = 5;
 
@@ -23,6 +23,8 @@ namespace asteroids {
 
     public:
         GameEngine(Spaceship& ship);
+
+        GameEngine();
 
         void RunGame();
 
@@ -44,7 +46,7 @@ namespace asteroids {
         /**
          * Display the current level with the ships on the screen
          */
-        void Display() const;
+        void Display();
 
         void AdvanceOneFrame();
 
@@ -64,6 +66,12 @@ namespace asteroids {
          */
         void UpdateHealth();
 
+        std::vector<Level> GetLevels() const;
+
+        int GetCurrentLevel() const;
+
+        Spaceship& GetShip();
+
     private:
 
         int current_level_ = 0;
@@ -71,8 +79,6 @@ namespace asteroids {
         Spaceship ship_;
 
         std::vector<Level> levels_;
-
-        std::vector<Spaceship> enemies_;
 
         int score_ = 0;
 

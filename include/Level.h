@@ -17,7 +17,7 @@ namespace asteroids {
 
         int GetNumShips() const;
 
-        std::map<int, Spaceship> GetEnemies() const;
+        std::map<int, Spaceship>& GetEnemies();
 
         std::vector<int> GetEnemiesAlive() const;
 
@@ -25,13 +25,13 @@ namespace asteroids {
          * Checks if ship is moving right and cannot move any more right
          * @return true if on edge
          */
-        bool IsOnRightEdge(Spaceship &ship);
+        bool IsOnRightEdge(Spaceship &ship, int xEdge);
 
         /**
          * Checks if ship is moving left and cannot move any more left
          * @return true if on edge
          */
-        bool IsOnLeftEdge(Spaceship &ship);
+        bool IsOnLeftEdge(Spaceship &ship, int xEdge);
 
         /**
          * Calculates the spacing in between ships evenly
@@ -43,6 +43,8 @@ namespace asteroids {
         double CalculateShipSpacing(int x1, int x2, int num_ships) const;
 
         void InitializeShips(int x1, int y1, int x2, int y2);
+
+        std::vector<Spaceship>& GetEnemyShips();
 
 
     private:

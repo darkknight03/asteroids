@@ -23,12 +23,11 @@ namespace asteroids {
         void update() override;
         void keyDown(ci::app::KeyEvent event) override;
 
+
         const int kWindowSize = 1100;
         const int kMargin = 100;
 
     private:
-        Spaceship ship_;
-
         GameEngine engine_;
 
 

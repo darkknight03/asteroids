@@ -20,15 +20,21 @@ namespace asteroids {
 
 
     void Spaceship::MakeMove(int m) {
-        // move left
+        // move right
         if (m == 0) {
-            location_.x -= velocity_.x;
-        } else if (m == 1) {
-            // move right
             location_.x += velocity_.x;
+        } else if (m == 1) {
+            // move left
+            location_.x -= velocity_.x;
         } else if (m == 2) {
             // move down
-            location_.y -= velocity_.y;
+            location_.y += velocity_.y;
+            row_++;
+            velocity_.x *= -1;
+        } else if (m == 3) {
+            // move enemy ship both directions
+            // Velocity will be positive or negative depending on which row its on
+            location_.x += velocity_.x;
         } else {
             // shoot laser
             ShootLaser(50, vec2(10,10));
@@ -65,11 +71,11 @@ namespace asteroids {
         return damage_;
     }
 
-    void Spaceship::SetLocation(vec2& location) {
+    void Spaceship::SetLocation(const vec2& location) {
         location_ = location;
     }
 
-    void Spaceship::SetVelocity(vec2& velocity) {
+    void Spaceship::SetVelocity(const vec2& velocity) {
         velocity_ = velocity;
     }
 
@@ -100,6 +106,7 @@ namespace asteroids {
     void Spaceship::SetRow(int row) {
         row_ = row;
     }
+
 
     Spaceship::Spaceship() = default;
 }

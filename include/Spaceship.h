@@ -17,9 +17,9 @@ namespace asteroids {
 
         Spaceship();
 
-        void SetLocation(vec2 &location);
+        void SetLocation(const vec2 &location);
 
-        void SetVelocity(vec2 &velocity);
+        void SetVelocity(const vec2 &velocity);
 
         void SetRow(int row);
 
@@ -56,7 +56,7 @@ namespace asteroids {
 
         vec2 velocity_;
 
-        int score_;
+        int score_ = 0;
 
         int damage_;
 

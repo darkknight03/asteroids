@@ -28,9 +28,9 @@ TEST_CASE("Test Spaceship methods") {
 
     SECTION("Test Movement") {
         ship.MakeMove(0);
-        REQUIRE(ship.GetLocation() == vec2(75,100));
+        REQUIRE(ship.GetLocation() == vec2(125,100));
         ship.MakeMove(2);
-        REQUIRE(ship.GetLocation() == vec2(75,90));
+        REQUIRE(ship.GetLocation() == vec2(125,90));
     }
 
     SECTION("Test Laser") {

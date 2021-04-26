@@ -1,9 +1,15 @@
 #include "../include/GameEngine.h"
 
+// TODO: Add laser to ship
+// TODO: Decrease health when laser hits ship
+// TODO: Decrease health when ship reaches bottom of screen
+// TODO: Add Image as ship
 
 namespace asteroids {
 
     GameEngine::GameEngine(Spaceship &ship) : ship_(ship) {}
+
+    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 50) {}
 
     void GameEngine::RunGame() {}
 
@@ -20,7 +26,7 @@ namespace asteroids {
         }
     }
 
-    void GameEngine::Display() const {
+    void GameEngine::Display()  {
         // Draw game space
         ci::gl::color(ci::Color("pink"));
         ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
@@ -32,22 +38,26 @@ namespace asteroids {
             // Draw enemy ship
             Spaceship enemy = levels_[current_level_].GetEnemies().at(s);
             ci::gl::color(ci::Color("orange"));
-            ci::gl::drawSolidCircle( ci::vec2( enemy.GetLocation()), float(enemy.GetRadius()), 6);
+            ci::gl::drawSolidCircle(ci::vec2(enemy.GetLocation()), float(enemy.GetRadius()), 6);
         }
 
         // Draw user controlled ship
-        ci::gl::color(ci::Color("orange"));
-        ci::gl::drawSolidCircle( ci::vec2( ship_.GetLocation() ), float(ship_.GetRadius()), 6);
+        ci::gl::color(ci::Color("green"));
+        ci::gl::drawSolidCircle(ci::vec2(ship_.GetLocation()), float(ship_.GetRadius()), 3);
 
         // Draw health meter
-        //ci::gl::color(ci::Color("red"));
-        //ci::gl::drawStrokedRect(ci::Rectf(vec2(100.0f, 100.0f), vec2(200.0f, 200.0f)));
-
+        ci::gl::color(ci::Color("red"));
+        ci::gl::drawSolidRect(ci::Rectf(vec2(kTopLeftX + 25, kTopLeftY + 25), vec2(kTopLeftX + 200, kTopLeftY + 75)));
 
         // Draw scoreboard w current level
-        //ci::gl::color(ci::Color("pink"));
-        //ci::gl::drawString("Score: " + score_ + " Level: " + current_level_, vec2(100, 15),
-                           //ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 20));
+        std::string score = "Score: " + std::to_string(ship_.GetScore());
+        std::string level = "Level: " + std::to_string(current_level_);
+
+        ci::gl::color(ci::Color("pink"));
+        ci::gl::drawString(score, vec2(kTopLeftX + 600, kTopLeftY + 25),
+                           ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
+        ci::gl::drawString(level, vec2(kTopLeftX + 750, kTopLeftY + 25),
+                           ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
 
     }
 
@@ -61,22 +71,15 @@ namespace asteroids {
     }
 
     void GameEngine::EnemyMove() {
-        // move each enemy spaceship once by its velocity and updating its position
-        std::map<int, Spaceship> enemies = levels_[current_level_].GetEnemies();
-        for (const int x : levels_[current_level_].GetEnemiesAlive()) {
-            Spaceship enemy = enemies.at(x);
-            // check position of enemy
-            // move right, left, or down depending on location
-            if (levels_[current_level_].IsOnRightEdge(enemy) || levels_[current_level_].IsOnLeftEdge(enemy)) {
+
+        for (const int s : levels_[current_level_].GetEnemiesAlive()) {
+            Spaceship& enemy = levels_[current_level_].GetEnemies()[s];
+
+            if (levels_[current_level_].IsOnRightEdge(enemy, kBottomRightX) ||
+                levels_[current_level_].IsOnLeftEdge(enemy, kTopLeftX)) {
                 enemy.MakeMove(2);
             }
-            // if enemy on even row, move right
-            // if enemy on odd row, move left
-            if (enemy.GetRow() % 2 == 0) {
-                enemy.MakeMove(1);
-            } else {
-                enemy.MakeMove(0);
-            }
+            enemy.MakeMove(3);
         }
 
     }
@@ -99,6 +102,18 @@ namespace asteroids {
 
     void GameEngine::SwitchLevel() {
         current_level_++;
+    }
+
+    std::vector<Level> GameEngine::GetLevels() const {
+        return levels_;
+    }
+
+    int GameEngine::GetCurrentLevel() const {
+        return current_level_;
+    }
+
+    Spaceship& GameEngine::GetShip() {
+        return ship_;
     }
 
 }
