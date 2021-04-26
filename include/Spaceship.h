@@ -2,13 +2,15 @@
 #define FINAL_PROJECT_SPACESHIP_H
 
 #include "cinder/gl/gl.h"
+#include "Laser.h"
+#include "vector"
 
 using glm::vec2;
 
 namespace asteroids {
 
     class Spaceship {
-        static const int kLaserRadius = 1;
+        static const int kLaserRadius = 3;
 
     public:
         Spaceship(const vec2 &startLocation, const vec2 &speed, int health, int radius);
@@ -17,10 +19,6 @@ namespace asteroids {
 
         Spaceship();
 
-        void SetLocation(const vec2 &location);
-
-        void SetVelocity(const vec2 &velocity);
-
         void SetRow(int row);
 
         void SetDamage(int power);
@@ -28,8 +26,6 @@ namespace asteroids {
         void ChangeScore(int score);
 
         void MakeMove(int m);
-
-        void EnemyMove();
 
         void LoseHealth(int num);
 
@@ -49,6 +45,8 @@ namespace asteroids {
 
         int GetRow() const;
 
+        std::vector<Laser> &GetLasers();
+
     private:
         vec2 location_;
 
@@ -58,11 +56,13 @@ namespace asteroids {
 
         int score_ = 0;
 
-        int damage_;
+        int damage_ = 0;
 
         int radius_;
 
         int row_;
+
+        std::vector<Laser> lasers_;
 
     };
 

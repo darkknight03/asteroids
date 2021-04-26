@@ -44,9 +44,6 @@ namespace asteroids {
 
         void InitializeShips(int x1, int y1, int x2, int y2);
 
-        std::vector<Spaceship>& GetEnemyShips();
-
-
     private:
         int num_ships_;
 

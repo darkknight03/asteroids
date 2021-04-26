@@ -2,7 +2,6 @@
 #define FINAL_PROJECT_LASER_H
 
 #include "cinder/gl/gl.h"
-#include "Spaceship.h"
 
 using glm::vec2;
 
@@ -20,7 +19,7 @@ namespace asteroids {
 
         int GetRadius() const;
 
-        bool CollideWithSpaceship(Spaceship &ship) const;
+        //bool CollideWithSpaceship(Spaceship &ship);
 
         void MakeMove();
 

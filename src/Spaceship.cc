@@ -37,16 +37,8 @@ namespace asteroids {
             location_.x += velocity_.x;
         } else {
             // shoot laser
-            ShootLaser(50, vec2(10,10));
+            ShootLaser(50, vec2(0,-10));
         }
-    }
-
-    void Spaceship::EnemyMove() {
-        // check where ship is based on game area
-        // if at right end of game area and moving right, move down
-        // if at left end of game area and moving left, move down
-        // if row is even, move right
-        // if row is odd, move left
     }
 
     void Spaceship::LoseHealth(int num) {
@@ -54,8 +46,10 @@ namespace asteroids {
     }
 
     void Spaceship::ShootLaser(int power, const vec2& speed) {
-        // Not Implemented
         Laser laser(location_, speed, power, kLaserRadius);
+        lasers_.push_back(laser);
+        ci::gl::color(ci::Color(58,26,229));
+        ci::gl::drawSolidEllipse(GetLocation(), 2.0f, 3.0f);
     }
 
 
@@ -69,14 +63,6 @@ namespace asteroids {
 
     int Spaceship::GetDamage() const {
         return damage_;
-    }
-
-    void Spaceship::SetLocation(const vec2& location) {
-        location_ = location;
-    }
-
-    void Spaceship::SetVelocity(const vec2& velocity) {
-        velocity_ = velocity;
     }
 
     int Spaceship::GetScore() const {
@@ -105,6 +91,10 @@ namespace asteroids {
 
     void Spaceship::SetRow(int row) {
         row_ = row;
+    }
+
+    std::vector<Laser> &Spaceship::GetLasers() {
+        return lasers_;
     }
 
 

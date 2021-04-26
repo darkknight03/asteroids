@@ -45,6 +45,12 @@ namespace asteroids {
         ci::gl::color(ci::Color("green"));
         ci::gl::drawSolidCircle(ci::vec2(ship_.GetLocation()), float(ship_.GetRadius()), 3);
 
+        //Draw Lasers'
+        for (const Laser& laser : ship_.GetLasers()) {
+            ci::gl::color(ci::Color(58,26,229));
+            ci::gl::drawSolidEllipse(laser.GetLocation(), 2.0f, 3.0f);
+        }
+
         // Draw health meter
         ci::gl::color(ci::Color("red"));
         ci::gl::drawSolidRect(ci::Rectf(vec2(kTopLeftX + 25, kTopLeftY + 25), vec2(kTopLeftX + 200, kTopLeftY + 75)));
@@ -64,6 +70,9 @@ namespace asteroids {
     void GameEngine::AdvanceOneFrame() {
         if (LevelOver()) {
             SwitchLevel();
+        }
+        for (Laser& laser : ship_.GetLasers()) {
+            laser.MakeMove();
         }
         EnemyMove();
         UpdateScore();

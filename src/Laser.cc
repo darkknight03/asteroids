@@ -21,12 +21,12 @@ namespace asteroids {
         return velocity_;
     }
 
-    bool Laser::CollideWithSpaceship(Spaceship &ship) const {
+    /*bool Laser::CollideWithSpaceship(Spaceship &ship) {
         float moving_toward = glm::dot((GetVelocity() - ship.GetVelocity()),
                                        (GetLocation() - ship.GetLocation()));
         return (glm::distance(GetLocation(), ship.GetLocation()) <=
                 GetRadius() + ship.GetRadius() && moving_toward < 0);
-    }
+    }*/
 
     int Laser::GetRadius() const {
         return radius_;
