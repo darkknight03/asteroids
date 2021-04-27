@@ -10,7 +10,7 @@ using glm::vec2;
 namespace asteroids {
 
     class Spaceship {
-        static const int kLaserRadius = 3;
+        static const int kLaserRadius = 10;
 
     public:
         Spaceship(const vec2 &startLocation, const vec2 &speed, int health, int radius);
@@ -46,6 +46,8 @@ namespace asteroids {
         int GetRow() const;
 
         std::vector<Laser> &GetLasers();
+
+        bool CollideWithLaser(Laser& laser);
 
     private:
         vec2 location_;

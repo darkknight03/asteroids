@@ -49,7 +49,7 @@ namespace asteroids {
         Laser laser(location_, speed, power, kLaserRadius);
         lasers_.push_back(laser);
         ci::gl::color(ci::Color(58,26,229));
-        ci::gl::drawSolidEllipse(GetLocation(), 2.0f, 3.0f);
+        ci::gl::drawSolidCircle(GetLocation(), float(kLaserRadius));
     }
 
 
@@ -95,6 +95,14 @@ namespace asteroids {
 
     std::vector<Laser> &Spaceship::GetLasers() {
         return lasers_;
+    }
+
+    bool Spaceship::CollideWithLaser(Laser &laser) {
+        //float moving_toward = glm::dot((laser.GetVelocity() - GetVelocity()),
+          //                             (laser.GetLocation() - GetLocation()));
+        //&& moving_toward < 0
+        return (glm::distance(laser.GetLocation(), GetLocation()) <=
+                laser.GetRadius() + GetRadius());
     }
 
 

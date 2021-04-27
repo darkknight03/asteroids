@@ -1,15 +1,13 @@
 #include "../include/GameEngine.h"
 
-// TODO: Add laser to ship
 // TODO: Decrease health when laser hits ship
 // TODO: Decrease health when ship reaches bottom of screen
 // TODO: Add Image as ship
+// TODO: Shade of enemy ship depends on health
 
 namespace asteroids {
 
-    GameEngine::GameEngine(Spaceship &ship) : ship_(ship) {}
-
-    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 50) {}
+    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 50) { }
 
     void GameEngine::RunGame() {}
 
@@ -45,10 +43,10 @@ namespace asteroids {
         ci::gl::color(ci::Color("green"));
         ci::gl::drawSolidCircle(ci::vec2(ship_.GetLocation()), float(ship_.GetRadius()), 3);
 
-        //Draw Lasers'
+        //Draw Lasers
         for (const Laser& laser : ship_.GetLasers()) {
             ci::gl::color(ci::Color(58,26,229));
-            ci::gl::drawSolidEllipse(laser.GetLocation(), 2.0f, 3.0f);
+            ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
         }
 
         // Draw health meter
@@ -68,19 +66,22 @@ namespace asteroids {
     }
 
     void GameEngine::AdvanceOneFrame() {
+        // Check is all enemy ships have been destroyed
+        // Change level
         if (LevelOver()) {
             SwitchLevel();
         }
+        // Move laser upward
         for (Laser& laser : ship_.GetLasers()) {
             laser.MakeMove();
         }
+        // Check if laser hit enemy ship and update enemy health and laser vector
+        LaserHitEnemy();
         EnemyMove();
-        UpdateScore();
         UpdateHealth();
     }
 
     void GameEngine::EnemyMove() {
-
         for (const int s : levels_[current_level_].GetEnemiesAlive()) {
             Spaceship& enemy = levels_[current_level_].GetEnemies()[s];
 
@@ -90,19 +91,30 @@ namespace asteroids {
             }
             enemy.MakeMove(3);
         }
-
     }
 
-    void GameEngine::UpdateScore() {
-        // check if enemy was destroyed
-        // increase score by health of enemy times 10
+    void GameEngine::LaserHitEnemy() {
+        for (size_t s = 0; s < levels_[current_level_].GetEnemiesAlive().size(); s++) {
+            int map_index = levels_[current_level_].GetEnemiesAlive()[s];
+            Spaceship &enemy = levels_[current_level_].GetEnemies()[map_index];
+            for (size_t i = 0; i < ship_.GetLasers().size(); i++) {
+                if (enemy.CollideWithLaser(ship_.GetLasers()[i])) {
+                    // if laser hits enemy, decrease enemy health and remove laser from vector
+                    enemy.LoseHealth(ship_.GetLasers()[i].GetPower());
+                    ship_.GetLasers().erase(ship_.GetLasers().begin()+i);
+                    if (enemy.GetHealth() <= 0) {
+                        ship_.ChangeScore(500);
+                        RemoveEnemyShip(s);
+                    }
+                }
+            }
+        }
     }
 
     void GameEngine::UpdateHealth() {
         // check if enemy reaches bottom of screen
         // reduce health by amount of enemy health remaining
     }
-
 
     bool GameEngine::LevelOver() {
         std::vector<int> alive = levels_.at(current_level_).GetEnemiesAlive();
@@ -124,5 +136,11 @@ namespace asteroids {
     Spaceship& GameEngine::GetShip() {
         return ship_;
     }
+
+    void GameEngine::RemoveEnemyShip(int location) {
+        std::vector<int>& enemies = levels_[current_level_].GetEnemiesAlive();
+        enemies.erase(enemies.begin() + location);
+    }
+
 
 }

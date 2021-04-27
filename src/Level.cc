@@ -75,7 +75,7 @@ namespace asteroids {
         return double((x2-x1)) / (num_ships + 1);
     }
 
-    std::vector<int> Level::GetEnemiesAlive() const {
+    std::vector<int>& Level::GetEnemiesAlive() {
         return alive_;
     }
 

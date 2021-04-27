@@ -22,8 +22,6 @@ namespace asteroids {
     class GameEngine {
 
     public:
-        GameEngine(Spaceship& ship);
-
         GameEngine();
 
         void RunGame();
@@ -57,11 +55,6 @@ namespace asteroids {
         void EnemyMove();
 
         /**
-         * Update score if an enemy ship is destroyed
-         */
-        void UpdateScore();
-
-        /**
          * Update user health if an enemy ship reaches a certain level
          */
         void UpdateHealth();
@@ -72,6 +65,13 @@ namespace asteroids {
 
         Spaceship& GetShip();
 
+        /**
+         * Checks if any laser hits any enemy ship
+         * Updates enemy health and removes laser from vector if it made contact
+         * If enemy health <= 0, remove enemy from vector and increase score
+         */
+        void LaserHitEnemy();
+
     private:
 
         int current_level_ = 0;
@@ -80,9 +80,13 @@ namespace asteroids {
 
         std::vector<Level> levels_;
 
-        int score_ = 0;
-
         //ci::gl::Texture myImage = ci::gl::Texture(loadImage(ci::app::loadResource("images\\spaceship.jpg")));;
+
+        /**
+         * Removes enemy ship from vector
+         * @param location to remove vector from
+         */
+        void RemoveEnemyShip(int location);
 
     };
 

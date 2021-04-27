@@ -8,7 +8,7 @@
 namespace asteroids {
 
     class Level {
-        const int kRadius = 25;
+        const int kRadius = 30;
 
     public:
         Level(int num_ships, int per_row, int health);
@@ -19,7 +19,7 @@ namespace asteroids {
 
         std::map<int, Spaceship>& GetEnemies();
 
-        std::vector<int> GetEnemiesAlive() const;
+        std::vector<int>& GetEnemiesAlive();
 
         /**
          * Checks if ship is moving right and cannot move any more right
