@@ -8,6 +8,7 @@ namespace asteroids {
         health_ = health;
         velocity_ = speed;
         radius_ = radius;
+        starting_health_ = health_;
     }
 
     Spaceship::Spaceship(const vec2 &startLocation, const vec2 &speed, int health, int radius, int row) {
@@ -16,6 +17,7 @@ namespace asteroids {
         health_ = health;
         radius_ = radius;
         row_ = row;
+        starting_health_ = health_;
     }
 
 
@@ -35,9 +37,12 @@ namespace asteroids {
             // move enemy ship both directions
             // Velocity will be positive or negative depending on which row its on
             location_.x += velocity_.x;
+        } else if (m == 4) {
+            // shoot enemy laser
+            ShootLaser(5, vec2(0,10));
         } else {
             // shoot laser
-            ShootLaser(50, vec2(0,-10));
+            ShootLaser(10, vec2(0,-10));
         }
     }
 
@@ -48,8 +53,8 @@ namespace asteroids {
     void Spaceship::ShootLaser(int power, const vec2& speed) {
         Laser laser(location_, speed, power, kLaserRadius);
         lasers_.push_back(laser);
-        ci::gl::color(ci::Color(58,26,229));
-        ci::gl::drawSolidCircle(GetLocation(), float(kLaserRadius));
+        //ci::gl::color(ci::Color(58,26,229));
+        //ci::gl::drawSolidCircle(GetLocation(), float(kLaserRadius));
     }
 
 
@@ -97,12 +102,17 @@ namespace asteroids {
         return lasers_;
     }
 
-    bool Spaceship::CollideWithLaser(Laser &laser) {
-        //float moving_toward = glm::dot((laser.GetVelocity() - GetVelocity()),
-          //                             (laser.GetLocation() - GetLocation()));
-        //&& moving_toward < 0
+    bool Spaceship::CollideWithLaser(Laser &laser) const{
         return (glm::distance(laser.GetLocation(), GetLocation()) <=
                 laser.GetRadius() + GetRadius());
+    }
+
+    void Spaceship::SetLocation(const vec2& location) {
+        location_ = location;
+    }
+
+    float Spaceship::CalculatePercentageHealth() const{
+        return float(health_) / float(starting_health_);
     }
 
 

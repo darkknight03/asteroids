@@ -1,13 +1,17 @@
 #include "../include/GameEngine.h"
 
-// TODO: Decrease health when laser hits ship
-// TODO: Decrease health when ship reaches bottom of screen
-// TODO: Add Image as ship
-// TODO: Shade of enemy ship depends on health
+
+// TODO: Add ability for enemy to shoot back or some type of falling projectile
+// TODO: Pause screen
+// TODO: GameOver screen
+// TODO: Add Image as ships
 
 namespace asteroids {
 
-    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 50) { }
+    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 50) {
+        paused_ = false;
+        game_over_ = false;
+    }
 
     void GameEngine::RunGame() {}
 
@@ -24,70 +28,115 @@ namespace asteroids {
         }
     }
 
-    void GameEngine::Display()  {
-        // Draw game space
-        ci::gl::color(ci::Color("pink"));
-        ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
-                                          vec2(kBottomRightX, kBottomRightY)));
+    void GameEngine::Display() {
+        if (!game_over_) {
+            ci::gl::color(ci::Color("Red"));
+            ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
+                                              vec2(kBottomRightX, kBottomRightY)));
+            ci::gl::drawString("Game Over", vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
+                                                 kTopLeftY + ((kTopLeftY + kBottomRightY) / 3)),
+                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 50));
+
+        } else if (paused_) {
+            // Draw paused screen
+            ci::gl::color(ci::Color("blue"));
+            ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
+                                              vec2(kBottomRightX, kBottomRightY)));
+            ci::gl::drawString("Paused", vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
+                                              kTopLeftY + ((kTopLeftY + kBottomRightY) / 3)),
+                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 50));
+
+        } else {
+            // Draw game space
+            ci::gl::color(ci::Color("pink"));
+            ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
+                                              vec2(kBottomRightX, kBottomRightY)));
 
 
-        // Draw enemy ships
-        for (const int s : levels_[current_level_].GetEnemiesAlive()) {
-            // Draw enemy ship
-            Spaceship enemy = levels_[current_level_].GetEnemies().at(s);
-            ci::gl::color(ci::Color("orange"));
-            ci::gl::drawSolidCircle(ci::vec2(enemy.GetLocation()), float(enemy.GetRadius()), 6);
+            // Draw enemy ships
+            for (const int s : levels_[current_level_].GetEnemiesAlive()) {
+                // Draw enemy ship and lasers shot from them
+                Spaceship enemy = levels_[current_level_].GetEnemies().at(s);
+                ci::gl::color(CalculateShipColor(enemy));
+                ci::gl::drawSolidCircle(ci::vec2(enemy.GetLocation()), float(enemy.GetRadius()), 6);
+                for (const Laser &laser : enemy.GetLasers()) {
+                    ci::gl::color(ci::Color(120, 0, 255));
+                    ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
+                }
+            }
+
+            // Draw user controlled ship
+            ci::gl::color(ci::Color("blue"));
+            ci::gl::drawSolidCircle(ci::vec2(ship_.GetLocation()), float(ship_.GetRadius()), 3);
+
+            //Draw Lasers
+            for (const Laser &laser : ship_.GetLasers()) {
+                ci::gl::color(ci::Color(90, 240, 245));
+                ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
+            }
+
+            // Draw health meter
+            std::string health = "Health: " + std::to_string(ship_.GetHealth());
+            ci::gl::color(ci::Color("red"));
+            ci::gl::drawString(health, vec2(kTopLeftX + 25, kTopLeftY + 25),
+                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
+
+            //ci::gl::drawSolidRect(ci::Rectf(vec2(kTopLeftX + 25, kTopLeftY + 25), vec2(kTopLeftX + 200, kTopLeftY + 75)));
+
+            // Draw scoreboard w current level
+            std::string score = "Score: " + std::to_string(ship_.GetScore());
+            std::string level = "Level: " + std::to_string(current_level_);
+
+            ci::gl::color(ci::Color("pink"));
+            ci::gl::drawString(score, vec2(kTopLeftX + 600, kTopLeftY + 25),
+                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
+            ci::gl::drawString(level, vec2(kTopLeftX + 750, kTopLeftY + 25),
+                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
         }
-
-        // Draw user controlled ship
-        ci::gl::color(ci::Color("green"));
-        ci::gl::drawSolidCircle(ci::vec2(ship_.GetLocation()), float(ship_.GetRadius()), 3);
-
-        //Draw Lasers
-        for (const Laser& laser : ship_.GetLasers()) {
-            ci::gl::color(ci::Color(58,26,229));
-            ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
-        }
-
-        // Draw health meter
-        ci::gl::color(ci::Color("red"));
-        ci::gl::drawSolidRect(ci::Rectf(vec2(kTopLeftX + 25, kTopLeftY + 25), vec2(kTopLeftX + 200, kTopLeftY + 75)));
-
-        // Draw scoreboard w current level
-        std::string score = "Score: " + std::to_string(ship_.GetScore());
-        std::string level = "Level: " + std::to_string(current_level_);
-
-        ci::gl::color(ci::Color("pink"));
-        ci::gl::drawString(score, vec2(kTopLeftX + 600, kTopLeftY + 25),
-                           ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
-        ci::gl::drawString(level, vec2(kTopLeftX + 750, kTopLeftY + 25),
-                           ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
-
     }
 
     void GameEngine::AdvanceOneFrame() {
-        // Check is all enemy ships have been destroyed
-        // Change level
+        // Check user health
+        if (ship_.GetHealth() > 0) {
+            game_over_ = true;
+        }
+        // If all enemy ships have been destroyed, change level
         if (LevelOver()) {
             SwitchLevel();
         }
         // Move laser upward
-        for (Laser& laser : ship_.GetLasers()) {
+        for (Laser &laser : ship_.GetLasers()) {
             laser.MakeMove();
         }
         // Check if laser hit enemy ship and update enemy health and laser vector
         LaserHitEnemy();
+        // Move enemy based on location
         EnemyMove();
-        UpdateHealth();
+        // Check if enemy reaches ground
+        EnemyAtBottom();
+
+
+        // Each enemy ship has a 1% chance of shooting a laser downward
+        /*EnemyShootLaser();
+        for (const int s : levels_[current_level_].GetEnemiesAlive()) {
+            Spaceship enemy = levels_[current_level_].GetEnemies().at(s);
+            for (Laser &laser : enemy.GetLasers()) {
+                laser.MakeMove();
+            }
+        }*/
+
     }
 
     void GameEngine::EnemyMove() {
-        for (const int s : levels_[current_level_].GetEnemiesAlive()) {
-            Spaceship& enemy = levels_[current_level_].GetEnemies()[s];
-
+        for (size_t s = 0; s < levels_[current_level_].GetEnemiesAlive().size(); s++) {
+            int map_index = levels_[current_level_].GetEnemiesAlive()[s];
+            Spaceship &enemy = levels_[current_level_].GetEnemies()[map_index];
             if (levels_[current_level_].IsOnRightEdge(enemy, kBottomRightX) ||
                 levels_[current_level_].IsOnLeftEdge(enemy, kTopLeftX)) {
                 enemy.MakeMove(2);
+            } else if (levels_[current_level_].IsAtBottom(enemy, kBottomRightY)) {
+                RemoveEnemyShip(s);
+                ship_.LoseHealth(enemy.GetHealth());
             }
             enemy.MakeMove(3);
         }
@@ -101,9 +150,9 @@ namespace asteroids {
                 if (enemy.CollideWithLaser(ship_.GetLasers()[i])) {
                     // if laser hits enemy, decrease enemy health and remove laser from vector
                     enemy.LoseHealth(ship_.GetLasers()[i].GetPower());
-                    ship_.GetLasers().erase(ship_.GetLasers().begin()+i);
+                    ship_.GetLasers().erase(ship_.GetLasers().begin() + i);
                     if (enemy.GetHealth() <= 0) {
-                        ship_.ChangeScore(500);
+                        ship_.ChangeScore(kEnemyStartingHealth * score_multiplier_);
                         RemoveEnemyShip(s);
                     }
                 }
@@ -111,10 +160,6 @@ namespace asteroids {
         }
     }
 
-    void GameEngine::UpdateHealth() {
-        // check if enemy reaches bottom of screen
-        // reduce health by amount of enemy health remaining
-    }
 
     bool GameEngine::LevelOver() {
         std::vector<int> alive = levels_.at(current_level_).GetEnemiesAlive();
@@ -123,6 +168,8 @@ namespace asteroids {
 
     void GameEngine::SwitchLevel() {
         current_level_++;
+        score_multiplier_++;
+
     }
 
     std::vector<Level> GameEngine::GetLevels() const {
@@ -133,13 +180,64 @@ namespace asteroids {
         return current_level_;
     }
 
-    Spaceship& GameEngine::GetShip() {
+    Spaceship &GameEngine::GetShip() {
         return ship_;
     }
 
     void GameEngine::RemoveEnemyShip(int location) {
-        std::vector<int>& enemies = levels_[current_level_].GetEnemiesAlive();
+        std::vector<int> &enemies = levels_[current_level_].GetEnemiesAlive();
         enemies.erase(enemies.begin() + location);
+    }
+
+    void GameEngine::EnemyAtBottom() {
+        for (size_t s = 0; s < levels_[current_level_].GetEnemiesAlive().size(); s++) {
+            int map_index = levels_[current_level_].GetEnemiesAlive()[s];
+            Spaceship &enemy = levels_[current_level_].GetEnemies()[map_index];
+            if (levels_[current_level_].IsAtBottom(enemy, kBottomRightY)) {
+                RemoveEnemyShip(s);
+                ship_.LoseHealth(enemy.GetHealth());
+            }
+        }
+    }
+
+    void GameEngine::GameOver() {
+        game_over_ = true;
+    }
+
+    ci::Color GameEngine::CalculateShipColor(Spaceship &ship) {
+        float percentage = ship.CalculatePercentageHealth();
+        if (percentage > 0.75) {
+            return ci::Color("Green");
+        } else if (percentage > 0.5) {
+            return ci::Color("Yellow");
+        } else if (percentage > 0.25) {
+            return ci::Color("Orange");
+        } else if (percentage > 0.10) {
+            return ci::Color("Red");
+        } else {
+            return ci::Color(115, 30, 50);
+        }
+        /*float g = percentage * 255;
+        float b = percentage * 255;
+        return ci::Color(100, g, b);*/
+    }
+
+    void GameEngine::EnemyShootLaser() {
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_int_distribution<> dist(0, 10000);
+        for (size_t s = 0; s < levels_[current_level_].GetEnemiesAlive().size(); s++) {
+            int map_index = levels_[current_level_].GetEnemiesAlive()[s];
+            Spaceship &enemy = levels_[current_level_].GetEnemies()[map_index];
+            if (dist(mt) < 10) {
+                enemy.MakeMove(4);
+            }
+        }
+
+    }
+
+    void GameEngine::ChangePauseStatus() {
+        paused_ = !paused_;
     }
 
 

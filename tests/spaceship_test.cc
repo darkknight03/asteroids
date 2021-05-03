@@ -6,8 +6,10 @@ TEST_CASE("Test Spaceship methods") {
 
     SECTION("Test Getter Methods") {
         REQUIRE(ship.GetRadius() == 25);
-        REQUIRE((ship.GetLocation() == vec2(100,100)));
-        REQUIRE(ship.GetVelocity() == vec2(25,10));
+        REQUIRE(ship.GetLocation().x == Approx(100).epsilon(0.1));
+        REQUIRE(ship.GetLocation().y == Approx(100).epsilon(0.1));
+        REQUIRE(ship.GetVelocity().x == Approx(25).epsilon(0.1));
+        REQUIRE(ship.GetVelocity().y == Approx(10).epsilon(0.1));
     }
 
     SECTION("Test Row Setter") {
@@ -28,9 +30,16 @@ TEST_CASE("Test Spaceship methods") {
 
     SECTION("Test Movement") {
         ship.MakeMove(0);
-        REQUIRE(ship.GetLocation() == vec2(125,100));
+        REQUIRE(ship.GetLocation().x == Approx(125).epsilon(0.1));
+        REQUIRE(ship.GetLocation().y == Approx(100).epsilon(0.1));
         ship.MakeMove(2);
-        REQUIRE(ship.GetLocation() == vec2(125,90));
+        REQUIRE(ship.GetLocation().x == Approx(125).epsilon(0.1));
+        REQUIRE(ship.GetLocation().y == Approx(110).epsilon(0.1));
+    }
+
+    SECTION("Test Enemy Colors") {
+        ship.LoseHealth(25);
+        REQUIRE(ship.CalculatePercentageHealth() == 0.5f);
     }
 
     SECTION("Test Laser") {

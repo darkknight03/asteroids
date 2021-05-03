@@ -32,6 +32,9 @@ namespace asteroids {
                 // shoot laser
                 engine_.GetShip().MakeMove(9);
                 break;
+            case ci::app::KeyEvent::KEY_ESCAPE:
+                // Pause screen
+                engine_.ChangePauseStatus();
         }
     }
 }

@@ -6,12 +6,12 @@
 #include "cinder/ImageIo.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/app/App.h"
+#include <random>
 
 namespace asteroids {
 
-    const int kIncreaseHealth = 5;
-    const int kIncreaseVelocity = 1;
-    const int kEnemyStartingHealth = 25;
+    const int kIncreaseHealth = 10;
+    const int kEnemyStartingHealth = 10;
     const int kNumberOfEnemyShipsStart = 5;
 
     const static int kTopLeftX = 50;
@@ -54,11 +54,6 @@ namespace asteroids {
          */
         void EnemyMove();
 
-        /**
-         * Update user health if an enemy ship reaches a certain level
-         */
-        void UpdateHealth();
-
         std::vector<Level> GetLevels() const;
 
         int GetCurrentLevel() const;
@@ -72,6 +67,33 @@ namespace asteroids {
          */
         void LaserHitEnemy();
 
+        /**
+         * Checks if any enemy ship is at bottom of screen
+         * Removes any ship that is and decreases player health
+         */
+        void EnemyAtBottom();
+
+        /**
+         * Called when player runs out of health
+         */
+        void GameOver();
+
+        /**
+         * Finds a color for enemy ship based on its percentage of health remaining
+         * @param ship to find color for
+         * @return a color corresponding with health of ship
+         */
+        ci::Color CalculateShipColor(Spaceship& ship);
+
+
+        void EnemyShootLaser();
+
+        /**
+         * Set whether game is paused or not
+         */
+        void ChangePauseStatus();
+
+
     private:
 
         int current_level_ = 0;
@@ -80,6 +102,12 @@ namespace asteroids {
 
         std::vector<Level> levels_;
 
+        int score_multiplier_ = 1;
+
+        bool paused_;
+
+        bool game_over_;
+
         //ci::gl::Texture myImage = ci::gl::Texture(loadImage(ci::app::loadResource("images\\spaceship.jpg")));;
 
         /**
@@ -87,6 +115,8 @@ namespace asteroids {
          * @param location to remove vector from
          */
         void RemoveEnemyShip(int location);
+
+
 
     };
 

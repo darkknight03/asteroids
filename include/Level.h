@@ -34,6 +34,14 @@ namespace asteroids {
         bool IsOnLeftEdge(Spaceship &ship, int xEdge);
 
         /**
+         * Checks if ship at bottom of screen
+         * @param ship enemy ship
+         * @param bottom y coordinate of bottom
+         * @return
+         */
+        bool IsAtBottom(Spaceship& ship, int bottom);
+
+        /**
          * Calculates the spacing in between ships evenly
          * @param x1 the first coordinate
          * @param x2 the second coordinate

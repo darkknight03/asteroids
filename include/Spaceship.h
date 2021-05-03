@@ -23,12 +23,27 @@ namespace asteroids {
 
         void SetDamage(int power);
 
+        void SetLocation(const vec2& location);
+
         void ChangeScore(int score);
 
+        /**
+         * Move right, left, down, or shoot laser
+         * @param m determines which move to make
+         */
         void MakeMove(int m);
 
+        /**
+         * Decrease health
+         * @param num to decrease health by
+         */
         void LoseHealth(int num);
 
+        /**
+         * Create a laser from center of ship
+         * @param power starting power
+         * @param speed of laser
+         */
         void ShootLaser(int power, const vec2 &speed);
 
         vec2 GetLocation() const;
@@ -47,12 +62,23 @@ namespace asteroids {
 
         std::vector<Laser> &GetLasers();
 
-        bool CollideWithLaser(Laser& laser);
+        /**
+         * Checks if laser hits ship
+         */
+        bool CollideWithLaser(Laser& laser) const;
+
+        /**
+         * Calculates how much health a ship has left
+         * @return
+         */
+        float CalculatePercentageHealth() const;
 
     private:
         vec2 location_;
 
         int health_;
+
+        int starting_health_;
 
         vec2 velocity_;
 

@@ -16,6 +16,11 @@ namespace asteroids {
         return (ship.GetLocation().x >= xEdge - (ship.GetRadius() * 2)) && ship.GetVelocity().x > 0;
     }
 
+    bool Level::IsAtBottom(Spaceship &ship, int bottom) {
+        return (ship.GetLocation().y >= bottom - (ship.GetRadius() * 2));
+    }
+
+
     void Level::InitializeShips(int x1, int y1, int x2, int y2) {
         // Initialize enemy ships location and speed
 
@@ -90,6 +95,5 @@ namespace asteroids {
     std::map<int, Spaceship>& Level::GetEnemies() {
         return enemies_;
     }
-
 
 }
