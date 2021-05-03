@@ -11,7 +11,7 @@
 namespace asteroids {
 
     const int kIncreaseHealth = 10;
-    const int kEnemyStartingHealth = 10;
+    const int kEnemyStartingHealth = 150;
     const int kNumberOfEnemyShipsStart = 5;
 
     const static int kTopLeftX = 50;

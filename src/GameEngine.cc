@@ -29,13 +29,23 @@ namespace asteroids {
     }
 
     void GameEngine::Display() {
-        if (!game_over_) {
+        if (game_over_) {
+            // Draw Game Over screen with user score
+            std::string score = "Score: " + std::to_string(ship_.GetScore());
             ci::gl::color(ci::Color("Red"));
             ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
                                               vec2(kBottomRightX, kBottomRightY)));
+
+
             ci::gl::drawString("Game Over", vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
                                                  kTopLeftY + ((kTopLeftY + kBottomRightY) / 3)),
-                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 50));
+                               ci::ColorA(100, 100, 100, 100), ci::Font("helvetica", 75));
+
+            ci::gl::drawString(score, vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
+                                           kTopLeftY + ((kTopLeftY + kBottomRightY) / 3) + 150),
+                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
+
+
 
         } else if (paused_) {
             // Draw paused screen
@@ -44,7 +54,7 @@ namespace asteroids {
                                               vec2(kBottomRightX, kBottomRightY)));
             ci::gl::drawString("Paused", vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
                                               kTopLeftY + ((kTopLeftY + kBottomRightY) / 3)),
-                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 50));
+                               ci::ColorA(100, 100, 100, 25), ci::Font("helvetica", 75));
 
         } else {
             // Draw game space
@@ -97,7 +107,7 @@ namespace asteroids {
 
     void GameEngine::AdvanceOneFrame() {
         // Check user health
-        if (ship_.GetHealth() > 0) {
+        if (ship_.GetHealth() <= 0) {
             game_over_ = true;
         }
         // If all enemy ships have been destroyed, change level
