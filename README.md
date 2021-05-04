@@ -1,3 +1,25 @@
-Fill this in before the final project deadline. Someone who has _no familiarity_ with your project should be able to read this and understand:
-* what your project does
-* how to set it up and run it
+# Asteroids
+
+### **Dependencies**
+- Visual Studio 2017
+- cmake
+
+### **Gameplay**
+
+- Goal of game is to get the highest score by destroying as many enemies as possible
+- Each level, the number of enemies and their health increases
+- Enemies' health is represented by its color
+- If the user runs out of health, the game ends
+
+### **Controls**
+
+Key | Action
+------------ | -------------
+Right Arrow | Move spaceship right
+Left Arrow | Move spaceship left
+Space Bar | Shoot laser
+Escape Key | Pause game
+q | Quit game
+
+
+
