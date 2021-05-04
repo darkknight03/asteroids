@@ -1,18 +1,17 @@
 #include "../include/GameEngine.h"
 
-
 // TODO: Add ability for enemy to shoot back or some type of falling projectile
+// TODO: Stagger projectile based on timing
+// TODO: After levels finish, GameOver
 
 namespace asteroids {
 
-    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 100) {
+    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 75) {
         paused_ = false;
         game_over_ = false;
         auto img = ci::loadImage("./assets/spaceship.png");
         texture = ci::gl::Texture::create(img);
-
     }
-
 
     void GameEngine::InitializeLevels(int number_of_levels) {
         int current_health = kEnemyStartingHealth;
@@ -20,6 +19,7 @@ namespace asteroids {
         for (int l = 0; l < number_of_levels; l++) {
             Level level(current_number_ships, 5, current_health);
             level.InitializeShips(kTopLeftX, kTopLeftY, kBottomRightX, kBottomRightY);
+            level.InitializeFallingProjectiles(kTopLeftX, kTopLeftY, kBottomRightX, kBottomRightY, l);
             levels_.push_back(level);
             current_health += kIncreaseHealth;
             // if level if multiple of 2, increase number of ships
@@ -50,10 +50,6 @@ namespace asteroids {
                 Spaceship enemy = levels_[current_level_].GetEnemies().at(s);
                 ci::gl::color(CalculateShipColor(enemy));
                 ci::gl::drawSolidCircle(ci::vec2(enemy.GetLocation()), float(enemy.GetRadius()), 6);
-                for (const Laser &laser : enemy.GetLasers()) {
-                    ci::gl::color(ci::Color(120, 0, 255));
-                    ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
-                }
             }
 
             // Draw user controlled ship
@@ -74,13 +70,18 @@ namespace asteroids {
                 ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
             }
 
+            // Draw projectiles
+            for (const Laser &laser : levels_[current_level_].GetLasers()) {
+                ci::gl::color(ci::Color(90, 240, 245));
+                ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
+            }
+
             // Draw health meter
             std::string health = "Health: " + std::to_string(ship_.GetHealth());
             ci::gl::color(ci::Color("red"));
             ci::gl::drawString(health, vec2(kTopLeftX + 25, kTopLeftY + 25),
                                ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
 
-            //ci::gl::drawSolidRect(ci::Rectf(vec2(kTopLeftX + 25, kTopLeftY + 25), vec2(kTopLeftX + 200, kTopLeftY + 75)));
 
             // Draw scoreboard w current level
             std::string score = "Score: " + std::to_string(ship_.GetScore());
@@ -114,15 +115,13 @@ namespace asteroids {
         // Check if enemy reaches ground
         EnemyAtBottom();
 
+        // Projectile movement
+        for (Laser &laser : levels_[current_level_].GetLasers()) {
+            laser.MakeMove();
+        }
 
-        // Each enemy ship has a 1% chance of shooting a laser downward
-        /*EnemyShootLaser();
-        for (const int s : levels_[current_level_].GetEnemiesAlive()) {
-            Spaceship enemy = levels_[current_level_].GetEnemies().at(s);
-            for (Laser &laser : enemy.GetLasers()) {
-                laser.MakeMove();
-            }
-        }*/
+        // Check is projectile hits user
+        LaserHitUser();
 
     }
 
@@ -155,6 +154,16 @@ namespace asteroids {
                         RemoveEnemyShip(s);
                     }
                 }
+            }
+        }
+    }
+
+    void GameEngine::LaserHitUser() {
+        for (size_t i = 0; i < levels_[current_level_].GetLasers().size(); i++) {
+            if (ship_.CollideWithLaser(levels_[current_level_].GetLasers()[i])) {
+                // if laser hits enemy, decrease enemy health and remove laser from vector
+                ship_.LoseHealth(levels_[current_level_].GetLasers()[i].GetPower());
+                levels_[current_level_].GetLasers().erase(levels_[current_level_].GetLasers().begin() + i);
             }
         }
     }

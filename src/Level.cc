@@ -38,7 +38,8 @@ namespace asteroids {
             if (row % 2 == 0) {
                 // even row, go right to left
                 for (int col = 0; col < per_row_; col++) {
-                    Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(1, yDiff), health_, kRadius, row);
+                    Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(1, yDiff), health_,
+                                    kRadius, row);
                     enemies_[ship_index] = enemy;
                     alive_.push_back(ship_index);
                     ship_index++;
@@ -46,7 +47,8 @@ namespace asteroids {
             } else {
                 // odd row, go left to right
                 for (int col = per_row_ - 1; col >= 0; col--) {
-                    Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(-1, yDiff), health_, kRadius, row);
+                    Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(-1, yDiff), health_,
+                                    kRadius, row);
                     enemies_[ship_index] = enemy;
                     alive_.push_back(ship_index);
                     ship_index++;
@@ -59,7 +61,8 @@ namespace asteroids {
         if (row % 2 == 0) {
             // go right to left
             for (int col = 0; col < extra; col++) {
-                Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(1, yDiff), health_, kRadius, row);
+                Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(1, yDiff), health_, kRadius,
+                                row);
                 enemies_[ship_index] = enemy;
                 alive_.push_back(ship_index);
                 ship_index++;
@@ -67,7 +70,8 @@ namespace asteroids {
         } else {
             // go left to right
             for (int col = per_row_ - 1; col >= per_row_ - extra; col--) {
-                Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(-1, yDiff), health_, kRadius, row);
+                Spaceship enemy(vec2(xStart + (xDiff * col), yStart + (yDiff * row)), vec2(-1, yDiff), health_, kRadius,
+                                row);
                 enemies_[ship_index] = enemy;
                 alive_.push_back(ship_index);
                 ship_index++;
@@ -76,10 +80,10 @@ namespace asteroids {
     }
 
     double Level::CalculateShipSpacing(int x1, int x2, int num_ships) const {
-        return double((x2-x1)) / (num_ships + 1);
+        return double((x2 - x1)) / (num_ships + 1);
     }
 
-    std::vector<int>& Level::GetEnemiesAlive() {
+    std::vector<int> &Level::GetEnemiesAlive() {
         return alive_;
     }
 
@@ -91,8 +95,24 @@ namespace asteroids {
         return num_ships_;
     }
 
-    std::map<int, Spaceship>& Level::GetEnemies() {
+    std::map<int, Spaceship> &Level::GetEnemies() {
         return enemies_;
+    }
+
+    std::vector<Laser> &Level::GetLasers() {
+        return lasers_;
+    }
+
+    void Level::InitializeFallingProjectiles(int x1, int y1, int x2, int y2, int level) {
+        for (int i = 0; i < level + 1; i++) {
+            // generate random location at top of screen
+            // generate random speed
+            // power based on level
+            // number of lasers also based on level
+            Laser laser(vec2(x1 + 100, y1), vec2(0, 1), 10, 10);
+            lasers_.push_back(laser);
+        }
+
     }
 
 }

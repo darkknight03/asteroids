@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 
+
 namespace asteroids {
 
     class Level {
@@ -20,6 +21,8 @@ namespace asteroids {
         std::map<int, Spaceship>& GetEnemies();
 
         std::vector<int>& GetEnemiesAlive();
+
+        std::vector<Laser>& GetLasers();
 
         /**
          * Checks if ship is moving right and cannot move any more right
@@ -59,6 +62,8 @@ namespace asteroids {
          */
         void InitializeShips(int x1, int y1, int x2, int y2);
 
+        void InitializeFallingProjectiles(int x1, int y1, int x2, int y2, int level);
+
     private:
         int num_ships_;
 
@@ -80,6 +85,8 @@ namespace asteroids {
          * Used for checking if the level is over
          */
         std::vector<int> alive_;
+
+        std::vector<Laser> lasers_;
 
     };
 

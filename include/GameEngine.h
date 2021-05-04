@@ -64,6 +64,11 @@ namespace asteroids {
          * If enemy health <= 0, remove enemy from vector and increase score
          */
         void LaserHitEnemy();
+        /**
+         * Checks if a projectile hits user ship
+         * Updates enemy health
+         */
+        void LaserHitUser();
 
         /**
          * Checks if any enemy ship is at bottom of screen
@@ -102,11 +107,10 @@ namespace asteroids {
         bool game_over_;
 
         std::shared_ptr<cinder::gl::Texture2d> texture;
+        std::shared_ptr<cinder::gl::Texture2d> texture2;
 
-        ci::gl::Texture2dRef mTex;
 
-        //ci::gl::Texture myImage = ci::gl::Texture(loadImage(ci::loadResource("assets\\spaceship.png")));
-        //ci::gl::Texture texture = ci::loadImage("image.jpg");
+
 
 
         /**
