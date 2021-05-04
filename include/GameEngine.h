@@ -52,12 +52,6 @@ namespace asteroids {
          */
         void EnemyMove();
 
-        std::vector<Level> GetLevels() const;
-
-        int GetCurrentLevel() const;
-
-        Spaceship &GetShip();
-
         /**
          * Checks if any laser hits any enemy ship
          * Updates enemy health and removes laser from vector if it made contact
@@ -81,15 +75,18 @@ namespace asteroids {
          * @param ship to find color for
          * @return a color corresponding with health of ship
          */
-        ci::Color CalculateShipColor(Spaceship &ship);
-
-
-        void EnemyShootLaser();
+        static ci::Color CalculateShipColor(Spaceship &ship);
 
         /**
          * Set whether game is paused or not
          */
         void ChangePauseStatus();
+
+        std::vector<Level> GetLevels() const;
+
+        int GetCurrentLevel() const;
+
+        Spaceship &GetShip();
 
 
     private:
@@ -109,11 +106,6 @@ namespace asteroids {
         bool game_over_;
 
         std::shared_ptr<cinder::gl::Texture2d> texture_;
-        std::shared_ptr<cinder::gl::Texture2d> texture2;
-
-
-
-
 
         /**
          * Removes enemy ship from vector
@@ -123,7 +115,7 @@ namespace asteroids {
 
         void DrawGameOverScreen();
 
-        void DrawPauseScreen();
+        static void DrawPauseScreen();
 
 
     };

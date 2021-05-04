@@ -15,11 +15,7 @@ namespace asteroids {
 
         int GetPower() const;
 
-        vec2 GetVelocity() const;
-
         int GetRadius() const;
-
-        //bool CollideWithSpaceship(Spaceship &ship);
 
         void MakeMove();
 

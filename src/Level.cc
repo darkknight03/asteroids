@@ -79,7 +79,7 @@ namespace asteroids {
         }
     }
 
-    double Level::CalculateShipSpacing(int x1, int x2, int num_ships) const {
+    double Level::CalculateShipSpacing(int x1, int x2, int num_ships) {
         return double((x2 - x1)) / (num_ships + 1);
     }
 
@@ -104,11 +104,12 @@ namespace asteroids {
     }
 
     void Level::InitializeFallingProjectiles(int x1, int y1, int x2, int y2, int level) {
-        for (int i = 0; i < level + 1; i++) {
-            std::random_device rd;
-            std::mt19937 mt(rd());
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_int_distribution<> num(1, 8);
+        for (int i = 0; i < num(mt); i++) {
             std::uniform_int_distribution<> dist_x(x1, x2);
-            std::uniform_int_distribution<> dist_speed(0, 5);
+            std::uniform_int_distribution<> dist_speed(1, 5);
             // number of lasers also based on level
             Laser laser(vec2(dist_x(mt), y1), vec2(0, dist_speed(mt)), 10, 10);
             lasers_.push_back(laser);

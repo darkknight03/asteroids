@@ -1,6 +1,5 @@
 #include "../include/GameEngine.h"
 
-// TODO: Add ability for enemy to shoot back or some type of falling projectile
 // TODO: Stagger projectile based on timing
 
 namespace asteroids {
@@ -168,7 +167,6 @@ namespace asteroids {
         }
     }
 
-
     bool GameEngine::LevelOver() {
         std::vector<int> alive = levels_.at(current_level_).GetEnemiesAlive();
         return alive.empty();
@@ -208,7 +206,6 @@ namespace asteroids {
         }
     }
 
-
     ci::Color GameEngine::CalculateShipColor(Spaceship &ship) {
         float percentage = ship.CalculatePercentageHealth();
         if (percentage > 0.75) {
@@ -222,20 +219,6 @@ namespace asteroids {
         } else {
             return ci::Color(115, 30, 50);
         }
-    }
-
-    void GameEngine::EnemyShootLaser() {
-        std::random_device rd;
-        std::mt19937 mt(rd());
-        std::uniform_int_distribution<> dist(0, 10000);
-        for (size_t s = 0; s < levels_[current_level_].GetEnemiesAlive().size(); s++) {
-            int map_index = levels_[current_level_].GetEnemiesAlive()[s];
-            Spaceship &enemy = levels_[current_level_].GetEnemies()[map_index];
-            if (dist(mt) < 10) {
-                enemy.MakeMove(4);
-            }
-        }
-
     }
 
     void GameEngine::ChangePauseStatus() {

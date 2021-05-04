@@ -1,7 +1,3 @@
-//
-// Created by Nathan on 4/19/2021.
-//
-
 #include <AsteroidsApp.h>
 
 using asteroids::AsteroidsApp;

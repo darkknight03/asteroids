@@ -41,9 +41,5 @@ TEST_CASE("Test Spaceship methods") {
         ship.LoseHealth(25);
         REQUIRE(ship.CalculatePercentageHealth() == 0.5f);
     }
-
-    SECTION("Test Laser") {
-        // Not Implemented
-    }
 }
 

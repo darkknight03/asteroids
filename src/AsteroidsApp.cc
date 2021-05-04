@@ -34,6 +34,10 @@ namespace asteroids {
             case ci::app::KeyEvent::KEY_ESCAPE:
                 // Pause screen
                 engine_.ChangePauseStatus();
+                break;
+            case ci::app::KeyEvent::KEY_q:
+                // Quit game
+                _exit(0);
         }
     }
 }

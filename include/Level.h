@@ -29,13 +29,13 @@ namespace asteroids {
          * Checks if ship is moving right and cannot move any more right
          * @return true if on edge
          */
-        bool IsOnRightEdge(Spaceship &ship, int xEdge);
+        static bool IsOnRightEdge(Spaceship &ship, int xEdge);
 
         /**
          * Checks if ship is moving left and cannot move any more left
          * @return true if on edge
          */
-        bool IsOnLeftEdge(Spaceship &ship, int xEdge);
+        static bool IsOnLeftEdge(Spaceship &ship, int xEdge);
 
         /**
          * Checks if ship at bottom of screen
@@ -43,7 +43,7 @@ namespace asteroids {
          * @param bottom y coordinate of bottom
          * @return
          */
-        bool IsAtBottom(Spaceship& ship, int bottom);
+        static bool IsAtBottom(Spaceship& ship, int bottom);
 
         /**
          * Calculates the spacing in between ships evenly
@@ -52,7 +52,7 @@ namespace asteroids {
          * @param num_ships per row
          * @return the calculation
          */
-        double CalculateShipSpacing(int x1, int x2, int num_ships) const;
+        static double CalculateShipSpacing(int x1, int x2, int num_ships) ;
 
         /**
          * Initializes enemy ships original position based on game board coordinates

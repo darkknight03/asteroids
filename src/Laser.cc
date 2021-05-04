@@ -17,10 +17,6 @@ namespace asteroids {
         return power_;
     }
 
-    vec2 Laser::GetVelocity() const {
-        return velocity_;
-    }
-
     int Laser::GetRadius() const {
         return radius_;
     }
