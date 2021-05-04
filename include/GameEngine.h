@@ -96,6 +96,8 @@ namespace asteroids {
 
         int current_level_ = 0;
 
+        int max_levels_;
+
         Spaceship ship_;
 
         std::vector<Level> levels_;
@@ -106,7 +108,7 @@ namespace asteroids {
 
         bool game_over_;
 
-        std::shared_ptr<cinder::gl::Texture2d> texture;
+        std::shared_ptr<cinder::gl::Texture2d> texture_;
         std::shared_ptr<cinder::gl::Texture2d> texture2;
 
 

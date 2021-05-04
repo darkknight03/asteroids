@@ -4,6 +4,7 @@
 #include "Spaceship.h"
 #include <vector>
 #include <map>
+#include "random"
 
 
 namespace asteroids {

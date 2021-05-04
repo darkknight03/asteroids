@@ -4,7 +4,7 @@ namespace asteroids {
 
     AsteroidsApp::AsteroidsApp() : engine_() {
         ci::app::setWindowSize(kWindowSize, kWindowSize - 150);
-        engine_.InitializeLevels(25);
+        engine_.InitializeLevels(26);
     }
 
     void AsteroidsApp::draw() {

@@ -2,7 +2,6 @@
 
 // TODO: Add ability for enemy to shoot back or some type of falling projectile
 // TODO: Stagger projectile based on timing
-// TODO: After levels finish, GameOver
 
 namespace asteroids {
 
@@ -10,10 +9,11 @@ namespace asteroids {
         paused_ = false;
         game_over_ = false;
         auto img = ci::loadImage("./assets/spaceship.png");
-        texture = ci::gl::Texture::create(img);
+        texture_ = ci::gl::Texture::create(img);
     }
 
     void GameEngine::InitializeLevels(int number_of_levels) {
+        max_levels_ = number_of_levels;
         int current_health = kEnemyStartingHealth;
         int current_number_ships = kNumberOfEnemyShipsStart;
         for (int l = 0; l < number_of_levels; l++) {
@@ -53,8 +53,8 @@ namespace asteroids {
             }
 
             // Draw user controlled ship
-            texture->bind();
-            auto shader = ci::gl::ShaderDef().texture(texture).lambert();
+            texture_->bind();
+            auto shader = ci::gl::ShaderDef().texture(texture_).lambert();
             auto glsl = ci::gl::getStockShader(shader);
             ci::gl::color(ci::Color("blue"));
             auto circle = ci::geom::Circle().radius(float(ship_.GetRadius())).center(
@@ -66,13 +66,13 @@ namespace asteroids {
 
             //Draw Lasers
             for (const Laser &laser : ship_.GetLasers()) {
-                ci::gl::color(ci::Color(90, 240, 245));
+                ci::gl::color(ci::Color("blue"));
                 ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
             }
 
             // Draw projectiles
             for (const Laser &laser : levels_[current_level_].GetLasers()) {
-                ci::gl::color(ci::Color(90, 240, 245));
+                ci::gl::color(ci::Color("red"));
                 ci::gl::drawSolidCircle(laser.GetLocation(), float(laser.GetRadius()));
             }
 
@@ -97,7 +97,7 @@ namespace asteroids {
 
     void GameEngine::AdvanceOneFrame() {
         // Check user health
-        if (ship_.GetHealth() <= 0) {
+        if (ship_.GetHealth() <= 0 || current_level_ == max_levels_ - 1) {
             game_over_ = true;
         }
         // If all enemy ships have been destroyed, change level
