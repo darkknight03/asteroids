@@ -20,7 +20,6 @@ namespace asteroids {
         return (ship.GetLocation().y >= bottom - (ship.GetRadius() * 2));
     }
 
-
     void Level::InitializeShips(int x1, int y1, int x2, int y2) {
         // Initialize enemy ships location and speed
 

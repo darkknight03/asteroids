@@ -2,18 +2,17 @@
 
 
 // TODO: Add ability for enemy to shoot back or some type of falling projectile
-// TODO: Pause screen
-// TODO: GameOver screen
-// TODO: Add Image as ships
 
 namespace asteroids {
 
-    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 50) {
+    GameEngine::GameEngine() : ship_(vec2(500, 850), vec2(5, 0), 100, 100) {
         paused_ = false;
         game_over_ = false;
+        auto img = ci::loadImage("./assets/spaceship.png");
+        texture = ci::gl::Texture::create(img);
+
     }
 
-    void GameEngine::RunGame() {}
 
     void GameEngine::InitializeLevels(int number_of_levels) {
         int current_health = kEnemyStartingHealth;
@@ -23,39 +22,21 @@ namespace asteroids {
             level.InitializeShips(kTopLeftX, kTopLeftY, kBottomRightX, kBottomRightY);
             levels_.push_back(level);
             current_health += kIncreaseHealth;
-            // TODO: check if level if multiple of 3, then increase
-            current_number_ships += 1;
+            // if level if multiple of 2, increase number of ships
+            // no more than 15 ships
+            if (current_number_ships < 15 && l % 2 == 0) {
+                current_number_ships += 1;
+            }
         }
     }
 
     void GameEngine::Display() {
         if (game_over_) {
             // Draw Game Over screen with user score
-            std::string score = "Score: " + std::to_string(ship_.GetScore());
-            ci::gl::color(ci::Color("Red"));
-            ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
-                                              vec2(kBottomRightX, kBottomRightY)));
-
-
-            ci::gl::drawString("Game Over", vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
-                                                 kTopLeftY + ((kTopLeftY + kBottomRightY) / 3)),
-                               ci::ColorA(100, 100, 100, 100), ci::Font("helvetica", 75));
-
-            ci::gl::drawString(score, vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
-                                           kTopLeftY + ((kTopLeftY + kBottomRightY) / 3) + 150),
-                               ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
-
-
-
+            DrawGameOverScreen();
         } else if (paused_) {
             // Draw paused screen
-            ci::gl::color(ci::Color("blue"));
-            ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
-                                              vec2(kBottomRightX, kBottomRightY)));
-            ci::gl::drawString("Paused", vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
-                                              kTopLeftY + ((kTopLeftY + kBottomRightY) / 3)),
-                               ci::ColorA(100, 100, 100, 25), ci::Font("helvetica", 75));
-
+            DrawPauseScreen();
         } else {
             // Draw game space
             ci::gl::color(ci::Color("pink"));
@@ -76,8 +57,16 @@ namespace asteroids {
             }
 
             // Draw user controlled ship
+            texture->bind();
+            auto shader = ci::gl::ShaderDef().texture(texture).lambert();
+            auto glsl = ci::gl::getStockShader(shader);
             ci::gl::color(ci::Color("blue"));
-            ci::gl::drawSolidCircle(ci::vec2(ship_.GetLocation()), float(ship_.GetRadius()), 3);
+            auto circle = ci::geom::Circle().radius(float(ship_.GetRadius())).center(
+                    vec2(ship_.GetLocation())).subdivisions(4);
+            auto c = ci::gl::Batch::create(circle, glsl);
+            ci::gl::enableDepthWrite();
+            ci::gl::enableDepthRead();
+            c->draw();
 
             //Draw Lasers
             for (const Laser &laser : ship_.GetLasers()) {
@@ -210,9 +199,6 @@ namespace asteroids {
         }
     }
 
-    void GameEngine::GameOver() {
-        game_over_ = true;
-    }
 
     ci::Color GameEngine::CalculateShipColor(Spaceship &ship) {
         float percentage = ship.CalculatePercentageHealth();
@@ -227,9 +213,6 @@ namespace asteroids {
         } else {
             return ci::Color(115, 30, 50);
         }
-        /*float g = percentage * 255;
-        float b = percentage * 255;
-        return ci::Color(100, g, b);*/
     }
 
     void GameEngine::EnemyShootLaser() {
@@ -248,6 +231,31 @@ namespace asteroids {
 
     void GameEngine::ChangePauseStatus() {
         paused_ = !paused_;
+    }
+
+    void GameEngine::DrawGameOverScreen() {
+        std::string score = "Score: " + std::to_string(ship_.GetScore());
+        ci::gl::color(ci::Color("Red"));
+        ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
+                                          vec2(kBottomRightX, kBottomRightY)));
+
+
+        ci::gl::drawString("Game Over", vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
+                                             kTopLeftY + ((kTopLeftY + kBottomRightY) / 3)),
+                           ci::ColorA(100, 100, 100, 100), ci::Font("helvetica", 75));
+
+        ci::gl::drawString(score, vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
+                                       kTopLeftY + ((kTopLeftY + kBottomRightY) / 3) + 150),
+                           ci::ColorA(25, 25, 25, 25), ci::Font("helvetica", 30));
+    }
+
+    void GameEngine::DrawPauseScreen() {
+        ci::gl::color(ci::Color("blue"));
+        ci::gl::drawStrokedRect(ci::Rectf(vec2(kTopLeftX, kTopLeftY),
+                                          vec2(kBottomRightX, kBottomRightY)));
+        ci::gl::drawString("Paused", vec2(kTopLeftX + ((kTopLeftX + kBottomRightX) / 3),
+                                          kTopLeftY + ((kTopLeftY + kBottomRightY) / 3)),
+                           ci::ColorA(100, 100, 100, 25), ci::Font("helvetica", 75));
     }
 
 

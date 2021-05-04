@@ -1,5 +1,4 @@
 #include "AsteroidsApp.h"
-#include "cinder/Log.h"
 
 namespace asteroids {
 

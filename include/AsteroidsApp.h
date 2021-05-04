@@ -30,7 +30,6 @@ namespace asteroids {
     private:
         GameEngine engine_;
 
-
     };
 
 

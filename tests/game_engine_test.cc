@@ -13,17 +13,11 @@ TEST_CASE("Test GameEngine") {
         REQUIRE(level.GetEnemies()[0].GetLocation().y == Approx(191.667f).epsilon(0.1));
         REQUIRE(level.GetEnemies()[2].GetLocation().x == Approx(525.0f).epsilon(0.1));
         REQUIRE(level.GetEnemies()[2].GetLocation().y == Approx(191.667f).epsilon(0.1));
-        //REQUIRE(level.GetEnemies()[1].GetLocation() == vec2(366.667,  191.667));
-        //REQUIRE(level.GetEnemies()[2].GetLocation() == vec2(525.000,  191.667));
     }
 
     SECTION("Test Location after an Update") {
         engine.AdvanceOneFrame();
         REQUIRE(level.GetEnemies()[0].GetLocation().x == Approx(208.333f).epsilon(0.1));
-    }
-
-    SECTION("Left and Right Edge Testing") {
-
     }
 
     SECTION("Bottom Edge Testing") {

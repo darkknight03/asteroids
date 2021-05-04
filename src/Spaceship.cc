@@ -53,8 +53,6 @@ namespace asteroids {
     void Spaceship::ShootLaser(int power, const vec2& speed) {
         Laser laser(location_, speed, power, kLaserRadius);
         lasers_.push_back(laser);
-        //ci::gl::color(ci::Color(58,26,229));
-        //ci::gl::drawSolidCircle(GetLocation(), float(kLaserRadius));
     }
 
 

@@ -50,6 +50,13 @@ namespace asteroids {
          */
         double CalculateShipSpacing(int x1, int x2, int num_ships) const;
 
+        /**
+         * Initializes enemy ships original position based on game board coordinates
+         * @param x1 top right x
+         * @param y1 top right y
+         * @param x2 bottom left x
+         * @param y2 bottom left y
+         */
         void InitializeShips(int x1, int y1, int x2, int y2);
 
     private:

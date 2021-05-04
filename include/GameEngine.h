@@ -11,7 +11,7 @@
 namespace asteroids {
 
     const int kIncreaseHealth = 10;
-    const int kEnemyStartingHealth = 150;
+    const int kEnemyStartingHealth = 10;
     const int kNumberOfEnemyShipsStart = 5;
 
     const static int kTopLeftX = 50;
@@ -23,8 +23,6 @@ namespace asteroids {
 
     public:
         GameEngine();
-
-        void RunGame();
 
         /**
          * Initializes the levels_ vector and changes to health and number of ships
@@ -58,7 +56,7 @@ namespace asteroids {
 
         int GetCurrentLevel() const;
 
-        Spaceship& GetShip();
+        Spaceship &GetShip();
 
         /**
          * Checks if any laser hits any enemy ship
@@ -74,16 +72,11 @@ namespace asteroids {
         void EnemyAtBottom();
 
         /**
-         * Called when player runs out of health
-         */
-        void GameOver();
-
-        /**
          * Finds a color for enemy ship based on its percentage of health remaining
          * @param ship to find color for
          * @return a color corresponding with health of ship
          */
-        ci::Color CalculateShipColor(Spaceship& ship);
+        ci::Color CalculateShipColor(Spaceship &ship);
 
 
         void EnemyShootLaser();
@@ -108,7 +101,13 @@ namespace asteroids {
 
         bool game_over_;
 
-        //ci::gl::Texture myImage = ci::gl::Texture(loadImage(ci::app::loadResource("images\\spaceship.jpg")));;
+        std::shared_ptr<cinder::gl::Texture2d> texture;
+
+        ci::gl::Texture2dRef mTex;
+
+        //ci::gl::Texture myImage = ci::gl::Texture(loadImage(ci::loadResource("assets\\spaceship.png")));
+        //ci::gl::Texture texture = ci::loadImage("image.jpg");
+
 
         /**
          * Removes enemy ship from vector
@@ -116,6 +115,9 @@ namespace asteroids {
          */
         void RemoveEnemyShip(int location);
 
+        void DrawGameOverScreen();
+
+        void DrawPauseScreen();
 
 
     };
